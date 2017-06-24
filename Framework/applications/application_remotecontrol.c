@@ -597,7 +597,7 @@ void RemoteShootControl(RemoteSwitch_t *sw, uint8_t val)
 		}break;
 		case FRICTION_WHEEL_ON:
 		{
-			////test
+			////test6.24
 			if(sw->switch_value1 == REMOTE_SWITCH_CHANGE_3TO1)   //╧ь╠уд╕╡абж
 			{
 				LASER_OFF();
