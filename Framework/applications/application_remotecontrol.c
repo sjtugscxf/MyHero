@@ -229,9 +229,9 @@ void RemoteControlProcessLanding(Remote_t *rc)
 					
 					  if(rc->ch2>1500)
 						{
-							TIM4->CCR1 = 1350;
-							TIM4->CCR2 = 1350;
-							TIM4->CCR3 = 1225;
+							TIM4->CCR1 = 1300;
+							TIM4->CCR2 = 1300;
+							TIM4->CCR3 = 1300;
 						}
 					  else if(rc->ch2< 600) 
 						{
