@@ -193,8 +193,8 @@ void AMControlTask(void const * argument){
 				else ChassisSpeedRef.rotate_ref = rotate_target;
 		}
 		 
-		 float aux3Speed = ChassisSpeedRef.forward_back_ref + ChassisSpeedRef.rotate_ref;
-	   float aux4Speed = -ChassisSpeedRef.forward_back_ref - ChassisSpeedRef.rotate_ref;
+		 float aux3Speed =ChassisSpeedRef.forward_back_ref - ChassisSpeedRef.rotate_ref;
+	   float aux4Speed =ChassisSpeedRef.forward_back_ref - ChassisSpeedRef.rotate_ref;
 		 
 		 setAux3WithSpeed(aux3Speed);
 	   setAux4WithSpeed(aux4Speed);
@@ -250,8 +250,8 @@ void ShooterLoop()
 //					  }
 						if (shootemer == 0)
 						{
-							if(shoot_dir == 1) testAngleTarget += 90.0*96;
-							else  testAngleTarget -= 90.0*96;
+							if(shoot_dir == 1) testAngleTarget -= 90.0*96;
+							else  testAngleTarget += 90.0*96;
 						}
 						rotate90 = 0;
 			    }
