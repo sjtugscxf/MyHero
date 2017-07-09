@@ -139,11 +139,6 @@ void CMGMControlTask(void const * argument){
 	 if(pitchAngleTarget<0)  pitchAngleTarget = 0;
 	 
 	  SetPitchWithAngle3510(pitchAngleTarget);
-	 
-	  SetFrictionWheelSpeed();
-	  SetBulletWheelSpeed();
-	 
-	  ShooterLoop();
 	}
 }
 float bulletSpeed = 0;
@@ -160,22 +155,57 @@ void AMControlTask(void const * argument){
 			 
 		 }
 		 
+		 if(ChassisSpeedRef.forward_back_ref < forward_target)
+		{
+				if(ChassisSpeedRef.forward_back_ref < forward_target-100) ChassisSpeedRef.forward_back_ref += 100;
+				else ChassisSpeedRef.forward_back_ref = forward_target;
+		}
+	 
+		if(ChassisSpeedRef.forward_back_ref > forward_target)
+		{
+				if(ChassisSpeedRef.forward_back_ref > forward_target + 100) ChassisSpeedRef.forward_back_ref -= 100;
+				else ChassisSpeedRef.forward_back_ref = forward_target;
+		}
+	 
+		if(ChassisSpeedRef.left_right_ref < left_target)
+		{
+				if(ChassisSpeedRef.left_right_ref < left_target-100) ChassisSpeedRef.left_right_ref += 100;
+				else ChassisSpeedRef.left_right_ref = left_target;
+		}
+	 
+		if(ChassisSpeedRef.left_right_ref > left_target)
+		{
+				if(ChassisSpeedRef.left_right_ref> left_target + 100) ChassisSpeedRef.left_right_ref -= 100;
+				else ChassisSpeedRef.left_right_ref = left_target;
+		}
+	 
+		if(ChassisSpeedRef.rotate_ref < rotate_target)
+		{
+				if(ChassisSpeedRef.rotate_ref < rotate_target-100) ChassisSpeedRef.rotate_ref += 100;
+				else ChassisSpeedRef.rotate_ref = rotate_target;
+		}
+	 
+		if(ChassisSpeedRef.rotate_ref > rotate_target)
+		{
+				if(ChassisSpeedRef.rotate_ref > rotate_target + 100) ChassisSpeedRef.rotate_ref -= 100;
+				else ChassisSpeedRef.rotate_ref = rotate_target;
+		}
+		 
+		 float aux3Speed = ChassisSpeedRef.forward_back_ref + ChassisSpeedRef.rotate_ref;
+	   float aux4Speed = -ChassisSpeedRef.forward_back_ref - ChassisSpeedRef.rotate_ref;
+		 
+		 setAux3WithSpeed(aux3Speed);
+	   setAux4WithSpeed(aux4Speed);
+		 
 		 if (Lift1AngleTarget > LIFTUPLIMIT)  Lift1AngleTarget = LIFTUPLIMIT;
 		 else if (Lift1AngleTarget < LIFTDOWNLIMIT)  Lift1AngleTarget = LIFTDOWNLIMIT;
 		 if (Lift2AngleTarget > LIFTUPLIMIT)  Lift2AngleTarget = LIFTUPLIMIT;
 			else if (Lift2AngleTarget < LIFTDOWNLIMIT)  Lift2AngleTarget = LIFTDOWNLIMIT;
-			if (Lift3AngleTarget > LIFTUPLIMIT)  Lift3AngleTarget = LIFTUPLIMIT;
-			else if (Lift3AngleTarget < LIFTDOWNLIMIT)  Lift3AngleTarget = LIFTDOWNLIMIT;
-			if (Lift4AngleTarget > LIFTUPLIMIT)  Lift4AngleTarget = LIFTUPLIMIT;
-			else if (Lift4AngleTarget < LIFTDOWNLIMIT)  Lift4AngleTarget = LIFTDOWNLIMIT;
-		 
 		 
 		 if(landing_flag)
 		 {
 			 SetLift1Angle(Lift1AngleTarget);
 			 SetLift2Angle(Lift2AngleTarget);
-			 SetLift3Angle(Lift3AngleTarget);
-			 SetLift4Angle(Lift4AngleTarget);
 		 }
 		 
 			 if (BulletAngleTarget < BULLETDOWNLIMIT) BulletAngleTarget = BULLETDOWNLIMIT ;
@@ -186,11 +216,10 @@ void AMControlTask(void const * argument){
 		 {
 				setAux1WithSpeed(aux1_targetSpeed);
 				setAux2WithSpeed(aux2_targetSpeed);
-				setAux3WithSpeed(aux3_targetSpeed);
-				setAux4WithSpeed(aux4_targetSpeed);
 		 }
 		 
-		 //setBulletWithSpeed(bulletSpeed);
+		 SetFrictionWheelSpeed();
+	   ShooterLoop();
 	}
 }
 

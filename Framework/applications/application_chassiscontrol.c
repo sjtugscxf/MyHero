@@ -6,6 +6,7 @@
 #include "drivers_canmotor_user.h"
 #include "application_pidfunc.h"
 #include "application_setmotor.h"
+#include "application_auxmotorcontrol.h"
 
 void setCMFLWithSpeed(float targetSpeed);
 void setCMFRWithSpeed(float targetSpeed);
@@ -36,6 +37,7 @@ void setChassisWithSpeed(float FrontBackSpeed, float LeftRightSpeed, float Rotat
 	float frSpeed = FrontBackSpeed - LeftRightSpeed + RotateSpeed;
 	float blSpeed = -FrontBackSpeed + LeftRightSpeed + RotateSpeed;
 	float brSpeed = -FrontBackSpeed - LeftRightSpeed + RotateSpeed;
+	
 	setCMFLWithSpeed(flSpeed);
 	setCMFRWithSpeed(frSpeed);
 	setCMBLWithSpeed(blSpeed);
