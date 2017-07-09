@@ -142,7 +142,7 @@ void RemoteControlProcessAttack(Remote_t *rc)
 			forward_target = -(rc->ch1 - 1024) / 66.0 * 4000;
 			left_target = (rc->ch0 - 1024) / 66.0 * 4000;
 					
-			rotate_target =  (rc->ch2 - 1024) /66.0*1000;
+			rotate_target =  (rc->ch2 - 1024) /66.0*4000;
 					
 	//		pitchref = (rc->ch3 - 1024) /66.0*2000;
 			pitchAngleTarget += (rc->ch3 - 1024)/30.0; 
