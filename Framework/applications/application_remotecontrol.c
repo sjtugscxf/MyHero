@@ -142,10 +142,11 @@ void RemoteControlProcessAttack(Remote_t *rc)
 			forward_target = -(rc->ch1 - 1024) / 66.0 * 4000;
 			left_target = (rc->ch0 - 1024) / 66.0 * 4000;
 					
-			rotate_target =  (rc->ch2 - 1024) /66.0*1000;
+			rotate_target =  (rc->ch2 - 1024) /66.0*4000;
 					
 	//		pitchref = (rc->ch3 - 1024) /66.0*2000;
 			pitchAngleTarget += (rc->ch3 - 1024)/30.0; 
+		  //pitchAngleTarget += (rc->ch3 - 1024)/500.0;    //新云台6623电机
 //			if (watch_flag == 1)  yaw_angle_set = CAMSET;
 //			else	 yaw_angle_set = 0;
 	//		yawAngleTarget   -= (rc->ch2 - 1024)/8800.0 * (YAWUPLIMIT-YAWDOWNLIMIT); 
@@ -226,8 +227,18 @@ void RemoteControlProcessLanding(Remote_t *rc)
 						if (Lift4AngleTarget > LIFTUPLIMIT)  Lift4AngleTarget = LIFTUPLIMIT;
 						else if (Lift4AngleTarget < LIFTDOWNLIMIT)  Lift4AngleTarget = LIFTDOWNLIMIT;
 					
-					  if(rc->ch2>1500)  BulletTargetSpeed = 1375;
-					  else if(rc->ch2< 600) BulletTargetSpeed = 1000;
+					  if(rc->ch2>1500)
+						{
+							TIM4->CCR1 = 1350;
+							TIM4->CCR2 = 1350;
+							TIM4->CCR3 = 1225;
+						}
+					  else if(rc->ch2< 600) 
+						{
+							TIM4->CCR1 = 1000;
+							TIM4->CCR2 = 1000;
+							TIM4->CCR3 = 1000;
+						}
 				}
 		}
 }
@@ -719,12 +730,12 @@ void SetFrictionWheelSpeed()
 
 void SetBulletWheelSpeed()
 {
-	if (BulletRealSpeed < BulletTargetSpeed) BulletRealSpeed++;
-	else BulletRealSpeed = BulletTargetSpeed;
-	TIM4->CCR1 = BulletRealSpeed;
-	TIM4->CCR2 = BulletRealSpeed;
-	if(BulletRealSpeed == 1000) TIM4->CCR3 = 1000;
-	else if (BulletRealSpeed>1225) TIM4->CCR3 = 1225;
+//	if (BulletRealSpeed < BulletTargetSpeed) BulletRealSpeed++;
+//	else BulletRealSpeed = BulletTargetSpeed;
+//	TIM4->CCR1 = BulletRealSpeed;
+//	TIM4->CCR2 = BulletRealSpeed;
+//	if(BulletRealSpeed == 1000) TIM4->CCR3 = 1000;
+//	else if (BulletRealSpeed>1225) TIM4->CCR3 = 1225;
 //	__HAL_TIM_SET_COMPARE(&FRICTION_TIM, TIM_CHANNEL_1, x);
 //	__HAL_TIM_SET_COMPARE(&FRICTION_TIM, TIM_CHANNEL_2, x);
 }
