@@ -33,10 +33,10 @@ void setChassisWithSpeed(float FrontBackSpeed, float LeftRightSpeed, float Rotat
 //	FrontBackSpeed = 0;
 //	LeftRightSpeed = 2000;
 //	RotateSpeed = 0;
-	float flSpeed = FrontBackSpeed + LeftRightSpeed + RotateSpeed;
-	float frSpeed = -FrontBackSpeed + LeftRightSpeed + RotateSpeed;
-	float blSpeed = FrontBackSpeed -LeftRightSpeed + RotateSpeed;
-	float brSpeed = -FrontBackSpeed - LeftRightSpeed + RotateSpeed;
+	float flSpeed = -FrontBackSpeed + LeftRightSpeed + RotateSpeed;
+	float frSpeed = +FrontBackSpeed +LeftRightSpeed + RotateSpeed;
+	float blSpeed =-FrontBackSpeed -LeftRightSpeed + RotateSpeed;
+	float brSpeed = +FrontBackSpeed - LeftRightSpeed + RotateSpeed;
 	
 	setCMFLWithSpeed(flSpeed);
 	setCMFRWithSpeed(frSpeed);
