@@ -135,10 +135,12 @@ void CMGMControlTask(void const * argument){
 		yawAngleTarget = yaw_angle_set;
     setYawWithAngle(yawAngleTarget);
 	 
-	 if(pitchAngleTarget>PITCHLIMIT)  pitchAngleTarget = PITCHLIMIT;
+	 if(pitchAngleTarget>PITCHLIMIT)  pitchAngleTarget = PITCHLIMIT;     //3510云台电机的限制
 	 if(pitchAngleTarget<0)  pitchAngleTarget = 0;
 	 
 	  SetPitchWithAngle3510(pitchAngleTarget);
+	  
+	  //SetPitchWithAngle(pitchAngleTarget);    //6623电机程序
 	}
 }
 float bulletSpeed = 0;

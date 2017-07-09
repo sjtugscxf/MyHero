@@ -13,7 +13,7 @@ PID_Regulator_t yawPositionPID = PID_INIT(5, 0.0, 0.0, 10000.0, 10000.0, 10000.0
 PID_Regulator_t yawSpeedPID = PID_INIT(40.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);
 //云台偏置
 int16_t YawZeroEncoderBias=-3450;
-int16_t PitchZeroEncoderBias=3180;
+int16_t PitchZeroEncoderBias=3180;  //需要用串口再调
 
 void setYawWithAngle(float targetAngle){
 	if(IOPool_hasNextRead(GMYAWRxIOPool, 0)){
@@ -41,22 +41,22 @@ void setYawWithAngle(float targetAngle){
 	}
 }
 
-PID_Regulator_t pitchPositionPID = PID_INIT(15.0, 0.00, 0.0, 10000.0, 10000.0, 10000.0, 10000.0);
+PID_Regulator_t pitchPositionPID = PID_INIT(5.0, 0.00, 0.0, 10000.0, 10000.0, 10000.0, 10000.0);
 PID_Regulator_t pitchSpeedPID = PID_INIT(25.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 2000.0);
 
 
 void setPitchWithAngle(float targetAngle){
-//	if(IOPool_hasNextRead(GMPITCHRxIOPool, 0)){
-//		//TargetAngle
-//		MINMAX(targetAngle, PITCHDOWNLIMIT, PITCHUPLIMIT);
-//		//RealAngle
-//		IOPool_getNextRead(GMPITCHRxIOPool, 0); 
-//		float realAngle = -(IOPool_pGetReadData(GMPITCHRxIOPool, 0)->angle - PitchZeroEncoderBias) * 360 / 8192.0;
-//		NORMALIZE_ANGLE180(realAngle);
-//		//RealSpeed
-//		IOPool_getNextRead(IMUIOPool, 0);
-//		float realSpeed = -IOPool_pGetReadData(IMUIOPool, 0)->gYroXs;
-//		
-//		setMotorWithPositionSpeedPID(GMPITCH, &pitchPositionPID, &pitchSpeedPID, targetAngle, realAngle, realSpeed);
-//	}
+	if(IOPool_hasNextRead(GMPITCHRxIOPool, 0)){
+		//TargetAngle
+		MINMAX(targetAngle, PITCHDOWNLIMIT, PITCHUPLIMIT);
+		//RealAngle
+		IOPool_getNextRead(GMPITCHRxIOPool, 0); 
+		float realAngle = -(IOPool_pGetReadData(GMPITCHRxIOPool, 0)->angle - PitchZeroEncoderBias) * 360 / 8192.0;
+		NORMALIZE_ANGLE180(realAngle);
+		//RealSpeed
+		IOPool_getNextRead(IMUIOPool, 0);
+		float realSpeed = gYroX;
+		
+		setMotorWithPositionSpeedPID(GMPITCH, &pitchPositionPID, &pitchSpeedPID, targetAngle, realAngle, realSpeed);
+	}
 }
