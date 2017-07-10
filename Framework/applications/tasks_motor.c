@@ -18,7 +18,7 @@
 
 uint32_t yawpidcnt = 0;
 PID_Regulator_t testPositionPID = PID_INIT(6.0, 0.0, 0.0, 1000000.0, 1000000.0, 1000000.0, 1000000.0);
-PID_Regulator_t testSpeedPID = PID_INIT(1.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);//0.0, 0.00003
+PID_Regulator_t testSpeedPID = PID_INIT(0.7, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);//0.0, 0.00003
 
 PID_Regulator_t Pitch3PositionPID = PID_INIT(6.0, 0.0, 0.0, 1000000.0, 1000000.0, 1000000.0, 1000000.0);
 PID_Regulator_t Pitch3SpeedPID = PID_INIT(2.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);//0.0, 0.00003
