@@ -145,8 +145,8 @@ void RemoteControlProcessAttack(Remote_t *rc)
 			rotate_target =  (rc->ch2 - 1024) /66.0*4000;
 					
 	//		pitchref = (rc->ch3 - 1024) /66.0*2000;
-			pitchAngleTarget += (rc->ch3 - 1024)/30.0; 
-		  //pitchAngleTarget += (rc->ch3 - 1024)/500.0;    //新云台6623电机
+			//pitchAngleTarget += (rc->ch3 - 1024)/30.0; 
+		  pitchAngleTarget -= (rc->ch3 - 1024)/2000.0;    //新云台6623电机
 //			if (watch_flag == 1)  yaw_angle_set = CAMSET;
 //			else	 yaw_angle_set = 0;
 	//		yawAngleTarget   -= (rc->ch2 - 1024)/8800.0 * (YAWUPLIMIT-YAWDOWNLIMIT); 
