@@ -13,7 +13,7 @@ PID_Regulator_t yawPositionPID = PID_INIT(5, 0.0, 0.0, 10000.0, 10000.0, 10000.0
 PID_Regulator_t yawSpeedPID = PID_INIT(40.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);
 //云台偏置
 int16_t YawZeroEncoderBias=-3450;
-int16_t PitchZeroEncoderBias=3180;  //需要用串口再调
+int16_t PitchZeroEncoderBias=133;  //需要用串口再调
 
 void setYawWithAngle(float targetAngle){
 	if(IOPool_hasNextRead(GMYAWRxIOPool, 0)){
@@ -28,21 +28,21 @@ void setYawWithAngle(float targetAngle){
 		//float realSpeed = -IOPool_pGetReadData(IMUIOPool, 0)->gYroZs;
 		float realSpeed = gYroZ;
 		
-//				static int countwhile2 = 0;
-//		if(countwhile2 >= 300){
-//			countwhile2 = 0;
-//        fw_printf("realAngle = %f \r\n", realAngle);
-//				fw_printf("gYroZ = %f \r\n", realSpeed);
-//		}else{
-//			countwhile2++;
-//		}		
+				static int countwhile1 = 0;
+		if(countwhile1 >= 300){
+			countwhile1 = 0;
+        fw_printf("realAngle = %f \r\n", realAngle);
+				fw_printf("gYroZ = %f \r\n", realSpeed);
+		}else{
+			countwhile1++;
+		}		
 		
 		setMotorWithPositionSpeedPID(GMYAW, &yawPositionPID, &yawSpeedPID, targetAngle, realAngle, realSpeed);
 	}
 }
 
-PID_Regulator_t pitchPositionPID = PID_INIT(5.0, 0.00, 0.0, 10000.0, 10000.0, 10000.0, 10000.0);
-PID_Regulator_t pitchSpeedPID = PID_INIT(25.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 2000.0);
+PID_Regulator_t pitchPositionPID = PID_INIT(8.0, 0.00, 0.0, 10000.0, 10000.0, 10000.0, 10000.0);
+PID_Regulator_t pitchSpeedPID = PID_INIT(18.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 3000.0);
 
 
 void setPitchWithAngle(float targetAngle){
@@ -56,6 +56,15 @@ void setPitchWithAngle(float targetAngle){
 		//RealSpeed
 		IOPool_getNextRead(IMUIOPool, 0);
 		float realSpeed = gYroX;
+		
+		static int countwhile2 = 0;
+		if(countwhile2 >= 300){
+			countwhile2 = 0;
+        fw_printf("realAngle = %f \r\n", realAngle);
+				fw_printf("gYrox = %f \r\n", realSpeed);
+		}else{
+			countwhile2++;
+		}		
 		
 		setMotorWithPositionSpeedPID(GMPITCH, &pitchPositionPID, &pitchSpeedPID, targetAngle, realAngle, realSpeed);
 	}
