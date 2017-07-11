@@ -206,6 +206,7 @@ void AMControlTask(void const * argument){
 			else if (Lift2AngleTarget < LIFTDOWNLIMIT)  Lift2AngleTarget = LIFTDOWNLIMIT;
 		 
 		 if(landing_flag)
+			 
 		 {
 			 SetLift1Angle(Lift1AngleTarget);
 			 SetLift2Angle(Lift2AngleTarget);
@@ -251,8 +252,8 @@ void ShooterLoop()
 //					  }
 						if (shootemer == 0)
 						{
-							if(shoot_dir == 1) testAngleTarget -= 90.0*96;
-							else  testAngleTarget += 90.0*96;
+							if(shoot_dir == 1) testAngleTarget += 90.0*96;
+							else  testAngleTarget -= 90.0*96;
 						}
 						rotate90 = 0;
 			    }
