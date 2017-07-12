@@ -149,13 +149,16 @@ float aux1_targetSpeed=0;
 float aux2_targetSpeed=0;
 float aux3_targetSpeed=0;
 float aux4_targetSpeed=0;
+float aux1_position1=0;
+float aux2_position2=0;
 void AMControlTask(void const * argument){
 	while(1){
 		osSemaphoreWait(AMCanRefreshSemaphoreHandle, osWaitForever);
 		if((GetWorkState() == STOP_STATE)  || GetWorkState() == CALI_STATE || GetWorkState() == PREPARE_STATE || GetEmergencyFlag() == EMERGENCY)   //||Is_Serious_Error()|| dead_lock_flag == 1紧急停车，编码器校准，无控制输入时都会使底盘控制停止
 		 {
-				
-			 
+				float aux1_position1 = (IOPool_pGetReadData(AMUDFLRxIOPool, 0)->angle) * 360 / 8192.0;
+			  
+			  float aux2_position2= (IOPool_pGetReadData(AMUDFRRxIOPool, 0)->angle) * 360 / 8192.0;
 		 }
 		 
 		 if(ChassisSpeedRef.forward_back_ref < forward_target)
@@ -208,7 +211,7 @@ void AMControlTask(void const * argument){
 		 if(landing_flag)
 			 
 		 {
-			 SetLift1Angle(Lift1AngleTarget);
+			 SetLift1Angle(-Lift1AngleTarget);
 			 SetLift2Angle(Lift2AngleTarget);
 		 }
 		 
@@ -218,7 +221,7 @@ void AMControlTask(void const * argument){
 		 
 		 if (liftcali_flag)
 		 {
-				setAux1WithSpeed(aux1_targetSpeed);
+				setAux1WithSpeed(-aux1_targetSpeed);
 				setAux2WithSpeed(aux2_targetSpeed);
 		 }
 		 
@@ -265,6 +268,7 @@ void ShooterLoop()
 					
 			
 			float testRealAngleCurr = (IOPool_pGetReadData(AMPLATERxIOPool, 0)->angle) * 360 / 8192.0;
+
 			float testRotateSpeed = (IOPool_pGetReadData(AMPLATERxIOPool, 0)->RotateSpeed) * 6;//度每秒(* 360 / 60.0)
 			
 			if(testRealAngleCurr - testRealAngleLast > 180){
@@ -377,7 +381,9 @@ void SetLift1Angle(float Lift1AngleTargetSet)
 			
 			static float Lift1AngleTarget = 0;
 				
-			Lift1AngleTarget = Lift1AngleTargetSet;
+				
+				
+			Lift1AngleTarget = Lift1AngleTargetSet+aux1_position1;
 	
 			float Lift1RealAngleCurr = (IOPool_pGetReadData(AMUDFLRxIOPool, 0)->angle) * 360 / 8192.0;
 			float Lift1RotateSpeed = (IOPool_pGetReadData(AMUDFLRxIOPool, 0)->RotateSpeed) * 6;//度每秒(* 360 / 60.0)
@@ -416,7 +422,7 @@ void SetLift2Angle(float Lift2AngleTargetSet)
 			
 			static float Lift2AngleTarget = 0;
 				
-			Lift2AngleTarget = Lift2AngleTargetSet;
+			Lift2AngleTarget = Lift2AngleTargetSet+aux2_position2;
 	
 			float Lift2RealAngleCurr = (IOPool_pGetReadData(AMUDFRRxIOPool, 0)->angle) * 360 / 8192.0;
 			float Lift2RotateSpeed = (IOPool_pGetReadData(AMUDFRRxIOPool, 0)->RotateSpeed) * 6;//度每秒(* 360 / 60.0)
@@ -431,6 +437,7 @@ void SetLift2Angle(float Lift2AngleTargetSet)
 			Lift2RealAngleLast = Lift2RealAngleCurr;
 			
 			//position		
+			
 			Lift2PositionPID.target = Lift2AngleTarget;
 			Lift2PositionPID.feedback = Lift2RealAngle;
 			Lift2PositionPID.Calc(&Lift2PositionPID);
