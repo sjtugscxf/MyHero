@@ -210,8 +210,8 @@ void RemoteControlProcessLanding(Remote_t *rc)
 						float autemp3 = (rc->ch1 - 1024)*2; 
 						Lift1AngleTarget += autemp3; 
 						Lift2AngleTarget += autemp3; 
-						Lift3AngleTarget += autemp3; 
-						Lift4AngleTarget += autemp3; 
+						//Lift3AngleTarget += autemp3; 
+						//Lift4AngleTarget += autemp3; 
 					
 					  BulletAngleTarget += (rc->ch3 - 1024)*2; 
 					
@@ -381,8 +381,8 @@ void MouseKeyControlProcess(Mouse_t *mouse, Key_t *key)
 					  liftcali_flag = 0;
 						Lift1AngleTarget += LIFTNUM; 
 						Lift2AngleTarget += LIFTNUM; 
-						Lift3AngleTarget += LIFTNUM; 
-						Lift4AngleTarget += LIFTNUM; 
+						//Lift3AngleTarget += LIFTNUM; 
+						//Lift4AngleTarget += LIFTNUM; 
 					
 					  if (Lift1AngleTarget > LIFTUPLIMIT)  Lift1AngleTarget = LIFTUPLIMIT;
 						else if (Lift1AngleTarget < LIFTDOWNLIMIT)  Lift1AngleTarget = LIFTDOWNLIMIT;
@@ -400,8 +400,8 @@ void MouseKeyControlProcess(Mouse_t *mouse, Key_t *key)
 					  liftcali_flag = 0;
 						Lift1AngleTarget -= LIFTNUM; 
 						Lift2AngleTarget -= LIFTNUM; 
-						Lift3AngleTarget -= LIFTNUM; 
-						Lift4AngleTarget -= LIFTNUM; 
+						//Lift3AngleTarget -= LIFTNUM; 
+						//Lift4AngleTarget -= LIFTNUM; 
 					
 					  if (Lift1AngleTarget > LIFTUPLIMIT)  Lift1AngleTarget = LIFTUPLIMIT;
 						else if (Lift1AngleTarget < LIFTDOWNLIMIT)  Lift1AngleTarget = LIFTDOWNLIMIT;

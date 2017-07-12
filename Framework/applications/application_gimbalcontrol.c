@@ -41,8 +41,8 @@ void setYawWithAngle(float targetAngle){
 	}
 }
 
-PID_Regulator_t pitchPositionPID = PID_INIT(8.0, 0.00, 0.0, 10000.0, 10000.0, 10000.0, 10000.0);
-PID_Regulator_t pitchSpeedPID = PID_INIT(18.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 3000.0);
+PID_Regulator_t pitchPositionPID = PID_INIT(20.0, 0.0, 12.0, 10000.0, 10000.0, 10000.0, 10000.0);
+PID_Regulator_t pitchSpeedPID = PID_INIT(40.0, 0.0, 20.0, 10000.0, 10000.0, 10000.0, 3000.0);
 
 
 void setPitchWithAngle(float targetAngle){
