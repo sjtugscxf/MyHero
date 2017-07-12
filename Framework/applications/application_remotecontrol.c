@@ -172,7 +172,7 @@ void RemoteControlProcessLanding(Remote_t *rc)
 //					Lift2AngleTarget += (rc->ch2 - 1024)/10.0; 
 //					Lift3AngleTarget += (rc->ch1 - 1024)/10.0; 
 //					Lift4AngleTarget += (rc->ch0 - 1024)/10.0; 
-					aux1_targetSpeed=-(rc->ch3- 1024)/66.0*8000;
+					aux1_targetSpeed=(rc->ch3- 1024)/66.0*8000;
 					aux2_targetSpeed=(rc->ch1 - 1024)/66.0*8000;
 					//aux3_targetSpeed=(rc->ch1 - 1024)/66.0*8000;
 					//aux4_targetSpeed=(rc->ch2 - 1024)/66.0*8000;
@@ -208,7 +208,7 @@ void RemoteControlProcessLanding(Remote_t *rc)
 					
 					
 						float autemp3 = (rc->ch1 - 1024)*2; 
-						Lift1AngleTarget -= autemp3; 
+						Lift1AngleTarget += autemp3; 
 						Lift2AngleTarget += autemp3; 
 						Lift3AngleTarget += autemp3; 
 						Lift4AngleTarget += autemp3; 
