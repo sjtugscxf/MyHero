@@ -198,7 +198,7 @@ void AMControlTask(void const * argument){
 		}
 		 
 		 float aux3Speed =ChassisSpeedRef.forward_back_ref - ChassisSpeedRef.rotate_ref;
-	   float aux4Speed =ChassisSpeedRef.forward_back_ref - ChassisSpeedRef.rotate_ref;
+	   float aux4Speed =(ChassisSpeedRef.forward_back_ref - ChassisSpeedRef.rotate_ref)/27*19;
 		 
 		 setAux3WithSpeed(aux3Speed);
 	   setAux4WithSpeed(aux4Speed);
