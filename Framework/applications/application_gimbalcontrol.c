@@ -12,6 +12,7 @@
 PID_Regulator_t yawPositionPID = PID_INIT(5, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 10000.0);
 PID_Regulator_t yawSpeedPID = PID_INIT(40.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);
 //云台偏置
+
 int16_t YawZeroEncoderBias=-3450;
 int16_t PitchZeroEncoderBias=133;  //需要用串口再调
 
