@@ -116,11 +116,11 @@ void CMGMControlTask(void const * argument){
 		setChassisWithSpeed(ChassisSpeedRef.forward_back_ref, ChassisSpeedRef.left_right_ref, ChassisSpeedRef.rotate_ref);
 
 	 if (yawpidcnt>0 ) yawpidcnt--;
-	 if(yawpidcnt==0) 
-	 {
-			yawPositionPID.kp =5 ;
-			yawSpeedPID.kp=40;
-	 }
+//	 if(yawpidcnt==0) 
+//	 {
+//			yawPositionPID.kp =5 ;
+//			yawSpeedPID.kp=40;
+//	 }
 //	  if(yawAngleTarget < yaw_angle_set)
 //    {
 //			if(yawAngleTarget < yaw_angle_set-1) yawAngleTarget += 1;
@@ -132,7 +132,7 @@ void CMGMControlTask(void const * argument){
 //			if(yawAngleTarget > yaw_angle_set+1) yawAngleTarget -= 1;
 //			else yawAngleTarget = yaw_angle_set;
 //		}			
-		yawAngleTarget = yaw_angle_set;
+		//yawAngleTarget = yaw_angle_set;
     setYawWithAngle(yawAngleTarget);
 	 
 	 //if(pitchAngleTarget>PITCHLIMIT)  pitchAngleTarget = PITCHLIMIT;     //3510云台电机的限制
@@ -296,7 +296,7 @@ void ShooterLoop()
    }
 }
 
-void SetPitchWithAngle3510(float Pitch3AngleTargetSet)
+/*void SetPitchWithAngle3510(float Pitch3AngleTargetSet)
 {
 			if(IOPool_hasNextRead(GMPITCHRxIOPool, 0)){
 			IOPool_getNextRead(GMPITCHRxIOPool, 0);
@@ -332,6 +332,7 @@ void SetPitchWithAngle3510(float Pitch3AngleTargetSet)
 			setMotor(GMPITCH, Pitch3Intensity);
    }
 }
+*/
 
 void SetBulletAngle(float BulletAngleTargetSet)
 {

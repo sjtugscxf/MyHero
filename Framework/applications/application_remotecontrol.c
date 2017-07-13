@@ -149,7 +149,7 @@ void RemoteControlProcessAttack(Remote_t *rc)
 		  pitchAngleTarget -= (rc->ch3 - 1024)/2000.0;    //ÐÂÔÆÌ¨6623µç»ú
 //			if (watch_flag == 1)  yaw_angle_set = CAMSET;
 //			else	 yaw_angle_set = 0;
-	//		yawAngleTarget   -= (rc->ch2 - 1024)/8800.0 * (YAWUPLIMIT-YAWDOWNLIMIT); 
+			yawAngleTarget   -= (rc->ch2 - 1024)/2000.0 * (YAWUPLIMIT-YAWDOWNLIMIT); 
 			//Éä»÷-Ä¦²ÁÂÖ£¬²¦ÅÌµç»ú×´Ì¬
 			RemoteShootControl(&switch1, rc->s1);
 			
