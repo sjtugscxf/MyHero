@@ -9,8 +9,8 @@
 #include "utilities_debug.h"
 #include "task_quaternion.h"
 //PID_INIT(Kp, Ki, Kd, KpMax, KiMax, KdMax, OutputMax)
-PID_Regulator_t yawPositionPID = PID_INIT(5, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 10000.0);
-PID_Regulator_t yawSpeedPID = PID_INIT(40.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);
+PID_Regulator_t yawPositionPID = PID_INIT(3.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 10000.0);
+PID_Regulator_t yawSpeedPID = PID_INIT(2.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);
 //ÔÆÌ¨Æ«ÖÃ
 
 int16_t YawZeroEncoderBias=-3450;
@@ -25,7 +25,7 @@ void setYawWithAngle(float targetAngle){
 		float realAngle = (IOPool_pGetReadData(GMYAWRxIOPool, 0)->angle - YawZeroEncoderBias) * 360 / 8192.0;
 		NORMALIZE_ANGLE180(realAngle);
 		//RealSpeed
-		//IOPool_getNextRead(IMUIOPool, 0);
+		IOPool_getNextRead(IMUIOPool, 0);
 		//float realSpeed = -IOPool_pGetReadData(IMUIOPool, 0)->gYroZs;
 		float realSpeed = gYroZ;
 		
@@ -37,13 +37,14 @@ void setYawWithAngle(float targetAngle){
 		}else{
 			countwhile1++;
 		}		
-		
+	
 		setMotorWithPositionSpeedPID(GMYAW, &yawPositionPID, &yawSpeedPID, targetAngle, realAngle, realSpeed);
+		
 	}
 }
 
-PID_Regulator_t pitchPositionPID = PID_INIT(20.0, 0.0, 12.0, 10000.0, 10000.0, 10000.0, 10000.0);
-PID_Regulator_t pitchSpeedPID = PID_INIT(40.0, 0.0, 20.0, 10000.0, 10000.0, 10000.0, 3000.0);
+PID_Regulator_t pitchPositionPID = PID_INIT(10.0, 0.01, 3.0, 10000.0, 10000.0, 10000.0, 10000.0);//20 0 12
+PID_Regulator_t pitchSpeedPID = PID_INIT(23.0, 0.0, 5.0, 10000.0, 10000.0, 10000.0, 3000.0);//40 0 20
 
 
 void setPitchWithAngle(float targetAngle){

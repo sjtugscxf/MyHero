@@ -64,7 +64,7 @@ void rcUartRxCpltCallback(){
 		}
 		else
 		{
-			fw_printfln("Wrong length rc!");
+			//fw_printfln("Wrong length rc!");
 			ChassisSpeedRef.forward_back_ref=0;
 			ChassisSpeedRef.left_right_ref=0;
 			ChassisSpeedRef.rotate_ref=0;
