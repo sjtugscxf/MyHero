@@ -219,21 +219,8 @@ void HAL_CAN_RxCpltCallback(CAN_HandleTypeDef* hcan){
 				break;
 			case GMPITCH_RXID:
 				IOPool_pGetWriteData(GMPITCHRxIOPool)->angle = CanRxGetU16(CMGMCanRxMsg, 0);
-				IOPool_pGetWriteData(GMPITCHRxIOPool)->RotateSpeed = CanRxGetU16(CMGMCanRxMsg, 1);
-			
-			  static float PITCHrealAngleLast = 0;
-				float PITCHrealAngleCurr = CanRxGetU16(CMGMCanRxMsg, 0) * 360 / 8192.0;
-				float PITCHrealAngleDiff;
-				if(PITCHrealAngleCurr - PITCHrealAngleLast > 180){
-					PITCHrealAngleDiff = PITCHrealAngleCurr - 360 - PITCHrealAngleLast;
-				}else if(PITCHrealAngleCurr - PITCHrealAngleLast < -180){
-					PITCHrealAngleDiff = PITCHrealAngleCurr + 360 - PITCHrealAngleLast;
-				}else{
-					PITCHrealAngleDiff = PITCHrealAngleCurr - PITCHrealAngleLast;
-				}
-				PITCHrealAngleLast =PITCHrealAngleCurr;
-				IOPool_pGetWriteData(GMPITCHRxIOPool)->RotateSpeed = PITCHrealAngleDiff * 1000 / 6.0;
-			
+				IOPool_pGetWriteData(GMPITCHRxIOPool)->realIntensity = CanRxGetU16(CMGMCanRxMsg, 1);
+				IOPool_pGetWriteData(GMPITCHRxIOPool)->giveIntensity = CanRxGetU16(CMGMCanRxMsg, 2);
 				IOPool_getNextWrite(GMPITCHRxIOPool);
 				break;
 			default:

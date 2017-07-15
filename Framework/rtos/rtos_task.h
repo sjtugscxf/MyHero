@@ -22,8 +22,6 @@ extern osThreadId sonarTaskHandle;
 
 extern osThreadId updateQuaternionTaskHandle;
 
-//extern osThreadId ShootingTaskHandle;
-
 //extern osThreadId testFlashTaskHandle;
 
 #endif

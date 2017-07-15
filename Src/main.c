@@ -44,7 +44,6 @@
 #include "main.h"
 #include "stm32f4xx_hal.h"
 #include "cmsis_os.h"
-#include "adc.h"
 #include "can.h"
 #include "dma.h"
 #include "spi.h"
@@ -61,7 +60,7 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-uint32_t ADC_Value[60];
+uint32_t ADC_Value[140];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -110,10 +109,9 @@ int main(void)
   MX_USART6_UART_Init();
   MX_TIM3_Init();
   MX_USART1_UART_Init();
-  MX_ADC1_Init();
 
   /* USER CODE BEGIN 2 */
-	HAL_ADC_Start_DMA(&hadc1,(uint32_t*)&ADC_Value,60);
+
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in freertos.c) */

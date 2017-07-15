@@ -303,7 +303,7 @@ void printIMUTask(void const * argument){
 		
 		IOPool_pGetWriteData(IMUIOPool)->gYroXs = imu_data.gx / 32.8f;
 		IOPool_pGetWriteData(IMUIOPool)->gYroYs = imu_data.gy / 32.8f;
-		IOPool_pGetWriteData(IMUIOPool)->gYroYs = imu_data.gz / 32.8f;
+		IOPool_pGetWriteData(IMUIOPool)->gYroZs = imu_data.gz / 32.8f;
 		
 		//osSemaphoreRelease(refreshIMUSemaphoreHandle);
 		

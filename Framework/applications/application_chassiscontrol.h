@@ -5,5 +5,5 @@
 //LeftRightSpeed -1000~1000
 //RotateSpeed -1000~1000 顺时针为正 clockwise+
 void setChassisWithSpeed(float FrontBackSpeed, float LeftRightSpeed, float RotateSpeed);
-void setPITCHWithSpeed(float targetSpeed);
+
 #endif

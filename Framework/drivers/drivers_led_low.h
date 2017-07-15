@@ -3,5 +3,5 @@
 
 void ledGreenTask(void const * argument);
 void ledRedTask(void const * argument);
-
+void stateLedTask(void const * argument);
 #endif

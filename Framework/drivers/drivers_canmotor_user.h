@@ -36,16 +36,14 @@ typedef struct{
 	int16_t realIntensity;
 	int16_t giveIntensity;
 }Motor6623RxMsg_t;
+//6623--[0,1]Angle;[2,3]RealIntensity;[4,5]GiveIntensity;
+IOPoolDeclare(GMPITCHRxIOPool, Motor6623RxMsg_t);
+IOPoolDeclare(GMYAWRxIOPool, Motor6623RxMsg_t);
 
 typedef struct{
 	uint16_t angle;
 	int16_t RotateSpeed;//RPM
 }Motor820RRxMsg_t;
-//6623--[0,1]Angle;[2,3]RealIntensity;[4,5]GiveIntensity;
-IOPoolDeclare(GMPITCHRxIOPool, Motor820RRxMsg_t);
-IOPoolDeclare(GMYAWRxIOPool, Motor6623RxMsg_t);
-
-
 //820R--[0,1]Angle;[2,3]RotateSpeed;
 IOPoolDeclare(CMFLRxIOPool, Motor820RRxMsg_t);
 IOPoolDeclare(CMFRRxIOPool, Motor820RRxMsg_t);

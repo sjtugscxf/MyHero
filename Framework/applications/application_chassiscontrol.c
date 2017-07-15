@@ -1,12 +1,11 @@
 #include "application_chassiscontrol.h"
-///ddddd
+
 #include "utilities_debug.h"
 
 #include "utilities_minmax.h"
 #include "drivers_canmotor_user.h"
 #include "application_pidfunc.h"
 #include "application_setmotor.h"
-#include "application_auxmotorcontrol.h"
 
 void setCMFLWithSpeed(float targetSpeed);
 void setCMFRWithSpeed(float targetSpeed);
@@ -18,12 +17,11 @@ PID_Regulator_t CMFRPositionPID = PID_INIT(100.0, 0.0, 0.0, 1000000.0, 1000000.0
 PID_Regulator_t CMBLPositionPID = PID_INIT(100.0, 0.0, 0.0, 1000000.0, 1000000.0, 1000000.0, 1000000.0);
 PID_Regulator_t CMBRPositionPID = PID_INIT(100.0, 0.0, 0.0, 1000000.0, 1000000.0, 1000000.0, 1000000.0);
 
-PID_Regulator_t CMFLSpeedPID = PID_INIT(1.0, 0.0, 0.0, 12000.0, 12000.0, 12000.0, 12000.0);
-PID_Regulator_t CMFRSpeedPID = PID_INIT(1.2, 0.0, 0.0, 12000.0, 12000.0, 12000.0, 12000.0);
-PID_Regulator_t CMBLSpeedPID = PID_INIT(1.0, 0.0, 0.0, 12000.0, 12000.0, 12000.0, 12000.0);
-PID_Regulator_t CMBRSpeedPID = PID_INIT(1.0, 0.0, 0.0, 12000.0, 12000.0, 12000.0, 12000.0);
+PID_Regulator_t CMFLSpeedPID = PID_INIT(1.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);
+PID_Regulator_t CMFRSpeedPID = PID_INIT(1.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);
+PID_Regulator_t CMBLSpeedPID = PID_INIT(1.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);
+PID_Regulator_t CMBRSpeedPID = PID_INIT(1.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);
 
-PID_Regulator_t PITCHSpeedPID = PID_INIT(1.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);
 
 //FrontBackSpeed -1000~1000
 //LeftRightSpeed -1000~1000
@@ -33,16 +31,14 @@ void setChassisWithSpeed(float FrontBackSpeed, float LeftRightSpeed, float Rotat
 //	FrontBackSpeed = 0;
 //	LeftRightSpeed = 2000;
 //	RotateSpeed = 0;
-	float flSpeed = -FrontBackSpeed + LeftRightSpeed + RotateSpeed;
-	float frSpeed = +FrontBackSpeed +LeftRightSpeed + RotateSpeed;
-	float blSpeed =-FrontBackSpeed -LeftRightSpeed + RotateSpeed;
-	float brSpeed = +FrontBackSpeed - LeftRightSpeed + RotateSpeed;
-	
+	float flSpeed = FrontBackSpeed + LeftRightSpeed + RotateSpeed;
+	float frSpeed = -FrontBackSpeed + LeftRightSpeed + RotateSpeed;
+	float blSpeed = FrontBackSpeed - LeftRightSpeed + RotateSpeed;
+	float brSpeed = -FrontBackSpeed - LeftRightSpeed + RotateSpeed;
 	setCMFLWithSpeed(flSpeed);
 	setCMFRWithSpeed(frSpeed);
 	setCMBLWithSpeed(blSpeed);
 	setCMBRWithSpeed(brSpeed);
-	
 	
 //	setCMFLWithSpeed(2000);
 //	setCMFRWithSpeed(-2000);
@@ -91,28 +87,5 @@ void setCMBRWithSpeed(float targetSpeed){
 		IOPool_getNextRead(CMBRRxIOPool, 0);
 		float realSpeed = (IOPool_pGetReadData(CMBRRxIOPool, 0)->RotateSpeed) * 6;//度每秒(* 360 / 60.0)
 		setMotorWithSpeedPID(CMBR, &CMBRSpeedPID, targetSpeed, realSpeed);
-	}
-}
-
-void setPITCHWithSpeed(float targetSpeed){
-	if(IOPool_hasNextRead(GMPITCHRxIOPool, 0)){
-		//TargetSpeed
-		//MINMAX(targetSpeed, LIMIT, LIMIT);
-		//RealSpeed
-		IOPool_getNextRead(GMPITCHRxIOPool, 0);
-		float realSpeed = (IOPool_pGetReadData(GMPITCHRxIOPool, 0)->RotateSpeed) * 6;//度每秒(* 360 / 60.0)
-		setMotorWithSpeedPID(GMPITCH, &PITCHSpeedPID, targetSpeed, realSpeed);
-		
-//			static int countPrint7 = 0;
-//			if(countPrint7 > 300)
-//			{
-//				countPrint7 = 0;
-//				fw_printf("P TA = %d\r\n", setMotorWithSpeedPID(GMPITCH, &PITCHSpeedPID, targetSpeed, realSpeed));
-//				fw_printf("========================\r\n");
-//			}
-//			else
-//			{
-//				countPrint7++;
-//			}
 	}
 }

@@ -10,8 +10,7 @@
 #include "utilities_tim.h"
 
 #include "drivers_buzzer_low.h"
-extern void UserTimerInit(void);
-
+#include "application_remotecontrol.h"
 uint8_t isInited = 0;
 void rtos_init(){
   //wait for devices
@@ -26,9 +25,9 @@ void rtos_init(){
 	MPU6500_Init();
 	IST8310_Init();
 	rcInit();
+	RemoteTaskInit();
 	ctrlUartInit();
 	motorInit();
-	UserTimerInit();
 //	mpu6050Init();
 //	Init_Quaternion();
 	fw_printfln("init success");

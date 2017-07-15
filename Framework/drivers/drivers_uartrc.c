@@ -18,6 +18,7 @@ void rcInit(){
 			Error_Handler();
 	} 
 	 __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);  
+
 }
 
 uint64_t last_rc_time=0;

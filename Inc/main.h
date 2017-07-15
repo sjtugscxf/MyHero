@@ -55,10 +55,10 @@
 #define IST_RST_GPIO_Port GPIOE
 #define LASER_Pin GPIO_PIN_13
 #define LASER_GPIO_Port GPIOG
-#define cam_Pin GPIO_PIN_0
-#define cam_GPIO_Port GPIOF
 #define KEY_Pin GPIO_PIN_10
 #define KEY_GPIO_Port GPIOD
+#define STATE_LED_Pin GPIO_PIN_1
+#define STATE_LED_GPIO_Port GPIOB
 #define LED_GREEN_Pin GPIO_PIN_14
 #define LED_GREEN_GPIO_Port GPIOF
 #define LED_RED_Pin GPIO_PIN_7

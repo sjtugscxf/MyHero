@@ -4,6 +4,7 @@
 #include "utilities_tim.h"
 #include "drivers_imu_low.h"
 #include "task_quaternion.h"
+
 extern IMUDataTypedef imu_data ;
 
 //初始化IMU数据
@@ -27,8 +28,10 @@ float invSqrt(float x) {
 float gx, gy, gz, ax, ay, az, mx, my, mz;
 float gYroX, gYroY, gYroZ;
 float angles[3];
-int16_t maxx = 203, maxy = -45, maxz = 421;
-int16_t minx = -90, miny = -321, minz = 134;
+int16_t maxx = 145, maxy = 10, maxz = 415;
+int16_t minx = -98, miny = -321, minz = 160;
+
+int16_t mymaxmx=-500,mymaxmy=-500,mymaxmz=-500,myminmx=500,myminmy=500,myminmz=500;
 void updateQuaternion()
 {
 			float mygetqval[9];
@@ -108,7 +111,8 @@ void updateQuaternion()
 			// compute reference direction of flux
 			hx = 2.0f*mx*(0.5f - q2q2 - q3q3) + 2.0f*my*(q1q2 - q0q3) + 2.0f*mz*(q1q3 + q0q2);
 			hy = 2.0f*mx*(q1q2 + q0q3) + 2.0f*my*(0.5f - q1q1 - q3q3) + 2.0f*mz*(q2q3 - q0q1);
-			hz = 2.0f*mx*(q1q3 - q0q2) + 2.0f*my*(q2q3 + q0q1) + 2.0f*mz*(0.5f - q1q1 - q2q2);         
+			hz = 2.0f*mx*(q1q3 - q0q2) + 2.0f*my*(q2q3 + q0q1) + 2.0f*mz*(0.5f - q1q1 - q2q2);     
+			
 			bx = sqrt((hx*hx) + (hy*hy));
 			bz = hz; 
 			// estimated direction of gravity and flux (v and w)
@@ -119,9 +123,13 @@ void updateQuaternion()
 			wy = 2.0f*bx*(q1q2 - q0q3) + 2.0f*bz*(q0q1 + q2q3);
 			wz = 2.0f*bx*(q0q2 + q1q3) + 2.0f*bz*(0.5f - q1q1 - q2q2);  
 			// error is sum of cross product between reference direction of fields and direction measured by sensors
-			ex = (ay*vz - az*vy) + (my*wz - mz*wy);
-			ey = (az*vx - ax*vz) + (mz*wx - mx*wz);
-			ez = (ax*vy - ay*vx) + (mx*wy - my*wx);
+//			ex = (ay*vz - az*vy) + (my*wz - mz*wy);
+//			ey = (az*vx - ax*vz) + (mz*wx - mx*wz);
+//			ez = (ax*vy - ay*vx) + (mx*wy - my*wx);
+			
+			ex = (ay*vz - az*vy);
+			ey = (az*vx - ax*vz);
+			ez = (ax*vy - ay*vx);
 
 			if(ex != 0.0f && ey != 0.0f && ez != 0.0f)
 			{
@@ -157,10 +165,15 @@ void updateQuaternion()
 			angles[2] = atan2(2 * q[2] * q[3] + 2 * q[0] * q[1], -2 * q[1] * q[1] - 2 * q[2] * q[2] + 1)* 180/M_PI; // roll       -pi-----pi  
 
 			static int countPrint = 0;
-			if(countPrint > 300)
+			if(countPrint > 500)
 			{
 				countPrint = 0;
-				
+//				if(imu_data.mx>mymaxmx) mymaxmx=imu_data.mx;
+//				if(imu_data.my>mymaxmy) mymaxmy=imu_data.my;
+//				if(imu_data.mz>mymaxmz) mymaxmz=imu_data.mz;
+//				if(imu_data.mx<myminmx) myminmx=imu_data.mx;
+//				if(imu_data.my<myminmy) myminmy=imu_data.my;
+//				if(imu_data.mz<myminmz) myminmz=imu_data.mz;
 //				fw_printf("mx max = %d | min = %d\r\n", mymaxmx, myminmx);
 //				fw_printf("my max = %d | min = %d\r\n", mymaxmy, myminmy);
 //				fw_printf("mz max = %d | min = %d\r\n", mymaxmz, myminmz);
@@ -170,16 +183,21 @@ void updateQuaternion()
 //				fw_printf("xxx = %d \r\n", 2147483647);
 //				fw_printf("halfT = %f \r\n", halfT);
 
-//				fw_printf("gYroX = %f | ", gYroX);
-//				fw_printf("gYroY = %f | ", gYroY);
-//				fw_printf("gYroZ = %f\r\n", gYroZ);
+//				fw_printf("angles0 = %f | ", angles[0]);
+//				fw_printf("angles1 = %f | ", angles[1]);
+//				fw_printf("angles2 = %f\r\n", angles[2]);
 //				fw_printf("========================\r\n");
-//				
+				
 //				fw_printf("mx = %d | ",imu_data.mx);
 //				fw_printf("my = %d | ",imu_data.my);
 //				fw_printf("mz = %d\r\n",imu_data.mz);
 //				fw_printf("========================\r\n");
-				
+
+//				fw_printf("gx = %d | ",imu_data.gx);
+//				fw_printf("gy = %d | ",imu_data.gy);
+//				fw_printf("gz = %d\r\n",imu_data.gz);
+//				fw_printf("========================\r\n");
+//				
 //				fw_printf("mx = %f | ",mx);
 //				fw_printf("my = %f | ",my);
 //				fw_printf("mz = %f\r\n",mz);

@@ -6,14 +6,23 @@
 #include "drivers_imu_user.h"
 #include "application_pidfunc.h"
 #include "application_setmotor.h"
-#include "utilities_debug.h"
-#include "task_quaternion.h"
+#include "drivers_imu_low.h"
 //PID_INIT(Kp, Ki, Kd, KpMax, KiMax, KdMax, OutputMax)
-PID_Regulator_t yawPositionPID = PID_INIT(5, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 10000.0);
-PID_Regulator_t yawSpeedPID = PID_INIT(40.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);
+PID_Regulator_t yawPositionPID = PID_INIT(5.0, 0.0, 0.5, 10000.0, 10000.0, 10000.0, 10000.0);
+PID_Regulator_t yawSpeedPID = PID_INIT(30.0, 0.0, 5.0, 10000.0, 10000.0, 10000.0, 4900.0);
+
+PID_Regulator_t pitchPositionPID = PID_INIT(8.0, 0.00, 0.0, 10000.0, 10000.0, 10000.0, 10000.0);
+PID_Regulator_t pitchSpeedPID = PID_INIT(40.0, 0.0, 15.0, 10000.0, 10000.0, 10000.0, 2000.0);
+
+//PID_Regulator_t pitchPositionPID = PID_INIT(5.0, 0.0, 0.0, 1000000.0, 1000000.0, 1000000.0, 100000.0);
+//PID_Regulator_t pitchSpeedPID = PID_INIT(1.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 4900.0);
 //云台偏置
-int16_t YawZeroEncoderBias=-3450;
-int16_t PitchZeroEncoderBias=133;  //需要用串口再调
+//4号车590 5041
+int16_t YawZeroEncoderBias=4670;
+int16_t PitchZeroEncoderBias=8140;
+float yawRealAngle=0;
+float pitchRealAngle=0;
+extern IMUDataTypedef imu_data;
 
 void setYawWithAngle(float targetAngle){
 	if(IOPool_hasNextRead(GMYAWRxIOPool, 0)){
@@ -21,28 +30,18 @@ void setYawWithAngle(float targetAngle){
 		MINMAX(targetAngle, YAWDOWNLIMIT, YAWUPLIMIT);
 		//RealAngle
 		IOPool_getNextRead(GMYAWRxIOPool, 0); 
-		float realAngle = (IOPool_pGetReadData(GMYAWRxIOPool, 0)->angle - YawZeroEncoderBias) * 360 / 8192.0;
-		NORMALIZE_ANGLE180(realAngle);
+		yawRealAngle = (IOPool_pGetReadData(GMYAWRxIOPool, 0)->angle - YawZeroEncoderBias) * 360 / 8192.0;
+		NORMALIZE_ANGLE180(yawRealAngle);
 		//RealSpeed
 		//IOPool_getNextRead(IMUIOPool, 0);
 		//float realSpeed = -IOPool_pGetReadData(IMUIOPool, 0)->gYroZs;
-		float realSpeed = gYroZ;
+		float realSpeed=imu_data.gz/32.8;
 		
-				static int countwhile1 = 0;
-		if(countwhile1 >= 300){
-			countwhile1 = 0;
-        fw_printf("realAngle = %f \r\n", realAngle);
-				fw_printf("gYroZ = %f \r\n", realSpeed);
-		}else{
-			countwhile1++;
-		}		
-		
-		setMotorWithPositionSpeedPID(GMYAW, &yawPositionPID, &yawSpeedPID, targetAngle, realAngle, realSpeed);
+		setMotorWithPositionSpeedPID(GMYAW, &yawPositionPID, &yawSpeedPID, targetAngle, yawRealAngle, realSpeed);
 	}
 }
 
-PID_Regulator_t pitchPositionPID = PID_INIT(8.0, 0.00, 0.0, 10000.0, 10000.0, 10000.0, 10000.0);
-PID_Regulator_t pitchSpeedPID = PID_INIT(18.0, 0.0, 0.0, 10000.0, 10000.0, 10000.0, 3000.0);
+
 
 
 void setPitchWithAngle(float targetAngle){
@@ -51,21 +50,13 @@ void setPitchWithAngle(float targetAngle){
 		MINMAX(targetAngle, PITCHDOWNLIMIT, PITCHUPLIMIT);
 		//RealAngle
 		IOPool_getNextRead(GMPITCHRxIOPool, 0); 
-		float realAngle = -(IOPool_pGetReadData(GMPITCHRxIOPool, 0)->angle - PitchZeroEncoderBias) * 360 / 8192.0;
-		NORMALIZE_ANGLE180(realAngle);
+		pitchRealAngle = -(IOPool_pGetReadData(GMPITCHRxIOPool, 0)->angle - PitchZeroEncoderBias) * 360 / 8192.0;
+		NORMALIZE_ANGLE180(pitchRealAngle);
 		//RealSpeed
-		IOPool_getNextRead(IMUIOPool, 0);
-		float realSpeed = gYroX;
-		
-		static int countwhile2 = 0;
-		if(countwhile2 >= 300){
-			countwhile2 = 0;
-        fw_printf("realAngle = %f \r\n", realAngle);
-				fw_printf("gYrox = %f \r\n", realSpeed);
-		}else{
-			countwhile2++;
-		}		
-		
-		setMotorWithPositionSpeedPID(GMPITCH, &pitchPositionPID, &pitchSpeedPID, targetAngle, realAngle, realSpeed);
+//		IOPool_getNextRead(IMUIOPool, 0);
+//		float realSpeed = -IOPool_pGetReadData(IMUIOPool, 0)->gYroXs;
+		float realSpeed=-imu_data.gx/32.8;
+		setMotorWithPositionSpeedPID(GMPITCH, &pitchPositionPID, &pitchSpeedPID, targetAngle, pitchRealAngle, realSpeed);
 	}
 }
+

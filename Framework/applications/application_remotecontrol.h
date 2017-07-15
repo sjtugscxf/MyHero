@@ -12,7 +12,8 @@
 #define LASER_ON()  HAL_GPIO_WritePin(LASER_GPIO_Port, LASER_Pin,GPIO_PIN_SET)
 #define LASER_OFF()  HAL_GPIO_WritePin(LASER_GPIO_Port, LASER_Pin,GPIO_PIN_RESET)
 //摩擦轮
-#define FRICTION_WHEEL_MAX_DUTY             1160
+#define FRICTION_WHEEL_MAX_DUTY             1600
+#define FRICTION_RAMP_TICK_COUNT			100
 //mouse control parameters
 #define MOUSE_TO_PITCH_ANGLE_INC_FACT 		0.025f * 3
 #define MOUSE_TO_YAW_ANGLE_INC_FACT 		0.025f * 3
@@ -45,10 +46,9 @@
 //输入模式:遥控器/键盘鼠标/停止运行
 typedef enum
 {
-	ATTACK_INPUT = 1,
+	REMOTE_INPUT = 1,
 	KEY_MOUSE_INPUT = 3,
-	LANDING_INPUT = 2,
-	STOP = 4,
+	STOP = 2,
 }InputMode_e;
 
 
@@ -121,12 +121,11 @@ void RCProcess(RC_CtrlData_t* pRC_CtrlData);
 void RemoteTaskInit(void);
 
 //调用的函数声明
+Shoot_State_e GetShootState();
 void MouseKeyControlProcess(Mouse_t *mouse, Key_t *key);
-void RemoteControlProcessAttack(Remote_t *rc);
-void RemoteControlProcessLanding(Remote_t *rc);
+void RemoteControlProcess(Remote_t *rc);
 void RemoteShootControl(RemoteSwitch_t *sw, uint8_t val);
-void SetFrictionWheelSpeed(void);
-void SetBulletWheelSpeed(void);
+void SetFrictionWheelSpeed(uint16_t x);
 void MouseShootControl(Mouse_t *mouse);
 Emergency_Flag GetEmergencyFlag(void);
 void SetEmergencyFlag(Emergency_Flag v);
@@ -137,29 +136,7 @@ void Timer_1ms_lTask(void const * argument);
 
 void WorkStateFSM(void);
 void WorkStateSwitchProcess(void);
-Shoot_State_e GetShootState();
-extern float pitchref;
 
-extern uint16_t FrictionTargetSpeed;
-extern uint16_t FrictionRealSpeed;
-extern uint16_t BulletTargetSpeed;
-extern uint16_t BulletRealSpeed;
-extern uint8_t shootemer;
-extern uint8_t shoot_dir;
-
-#define FASTSPEED 30000.0
-#define NORMALSPEED 20000.0
-#define SLOWSPEED 7000.0
-#define ROTATESPEED 380.0
-#define GMXSET 0.1
-#define GMYSET 1.4
-#define LIFTNUM 1000.0
-#define LIFTUPLIMIT  450000.0
-#define LIFTDOWNLIMIT  -100000.0
-#define BULLETUPLIMIT  5000.0
-#define BULLETDOWNLIMIT  -45000.0
-#define LIFTTARGET 400000.0
-#define CAMSET -400.0
-#define GETBULLETSPEED 1000.0
-
+void StartBulletFrictionWheel();
+void StopBulletFrictionWheel();
 #endif

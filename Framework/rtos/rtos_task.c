@@ -17,11 +17,13 @@
 //#include "tasks_mpu6050.h"
 
 //#include "tasks_testtasks.h"
-#include "tasks_engineering.h"
+#include "tasks_Hero.h"
 #include "utilities_debug.h"
 
 osThreadId ledGreenTaskHandle;
 osThreadId ledRedTaskHandle;
+//osThreadId ledStateTaskHandle;
+
 osThreadId buzzerTaskHandle;
 //IMU
 osThreadId printIMUTaskHandle;
@@ -39,14 +41,13 @@ osThreadId sonarTaskHandle;
 
 osThreadId updateQuaternionTaskHandle;
 
-
 osThreadId TimerTaskHandle;
 
-osThreadId EngineeringTaskHandle;
+//osThreadId EngineeringTaskHandle;
 
-osThreadId ShootingTaskHandle;
-
-//extern osThreadId testFlashTakHandle;
+osThreadId HeroTaskHandle;
+//osThreadId WaveTaskHandle;
+//extern osThreadId testFlashTaskHandle;
 
 //#include "drivers_flash.h"
 //osThreadId testFlashTaskHandle;
@@ -59,37 +60,40 @@ void rtos_addThreads(){
   ledGreenTaskHandle = osThreadCreate(osThread(ledGreenTask), NULL);
 	osThreadDef(ledRedTask, ledRedTask, osPriorityNormal, 0, 128);
   ledRedTaskHandle = osThreadCreate(osThread(ledRedTask), NULL);
-	
+
 //	osThreadDef(buzzerTask, buzzerTask, osPriorityNormal, 0, 128);
 //  buzzerTaskHandle = osThreadCreate(osThread(buzzerTask), NULL);
-	
 	
 	osThreadDef(printIMUTask, printIMUTask, osPriorityHigh, 0, 128);
   printIMUTaskHandle = osThreadCreate(osThread(printIMUTask), NULL);
 
-	
-	osThreadDef(getCtrlUartTask, getCtrlUartTask, osPriorityAboveNormal, 0, 512);
-  getCtrlUartTaskHandle = osThreadCreate(osThread(getCtrlUartTask), NULL);
+//	osThreadDef(getCtrlUartTask, getCtrlUartTask, osPriorityAboveNormal, 0, 512);
+//  getCtrlUartTaskHandle = osThreadCreate(osThread(getCtrlUartTask), NULL);
 
 	osThreadDef(CMGMC_Task, CMGMControlTask, osPriorityAboveNormal, 0, 512);
   CMGMControlTaskHandle = osThreadCreate(osThread(CMGMC_Task), NULL);
+	
 	osThreadDef(AMC_Task, AMControlTask, osPriorityAboveNormal, 0, 512);
   AMControlTaskHandle = osThreadCreate(osThread(AMC_Task), NULL);
 	
 	osThreadDef(CMGMC_T_Task, CMGMCanTransmitTask, osPriorityRealtime, 0, 512);
   CMGMCanTransmitTaskHandle = osThreadCreate(osThread(CMGMC_T_Task), NULL);
+	
 	osThreadDef(AMC_T_Task, AMCanTransmitTask, osPriorityRealtime, 0, 512);
   AMCanTransmitTaskHandle = osThreadCreate(osThread(AMC_T_Task), NULL);
 	
-	osThreadDef(Engineering_Task, EngineeringTask, osPriorityNormal, 0, 256);
-  EngineeringTaskHandle = osThreadCreate(osThread(Engineering_Task), NULL);
+
 	osThreadDef(updateQ_Task, updateQuaternionTask, osPriorityNormal, 0, 256);
   updateQuaternionTaskHandle = osThreadCreate(osThread(updateQ_Task), NULL);
+	
 	osThreadDef(Timer_Task, Timer_1ms_lTask, osPriorityAboveNormal, 0, 256);
   TimerTaskHandle = osThreadCreate(osThread(Timer_Task), NULL);
 	
-//	osThreadDef(Shooting_Task,ShootingTask,osPriorityNormal,0,128);
-//	ShootingTaskHandle = osThreadCreate(osThread(ShootingTask),NULL);
+//	osThreadDef(Hero_Task, HeroTask, osPriorityNormal, 0, 256);
+//	HeroTaskHandle = osThreadCreate(osThread(Hero_Task), NULL);
+
+//	osThreadDef(Wave_Task, wave_task, osPriorityNormal, 0, 128);
+//  WaveTaskHandle = osThreadCreate(osThread(Wave_Task), NULL);
 	
 //	osThreadDef(RControlTask, RControlTask, osPriorityAboveNormal , 0, 512);
 //  RControlTaskHandle = osThreadCreate(osThread(RControlTask), NULL);

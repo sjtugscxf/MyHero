@@ -4,12 +4,15 @@
 #include "peripheral_gpio.h"
 #include "cmsis_os.h"
 #include "gpio.h"
+#include "utilities_debug.h"
 
 #define ledGreenOn() HAL_GPIO_WritePin(GREEN_PIN, GREEN_GPIO_PORT, GPIO_PIN_RESET)
 #define ledGreenOff() HAL_GPIO_WritePin(GREEN_PIN, GREEN_GPIO_PORT, GPIO_PIN_SET)
 #define ledRedOn() HAL_GPIO_WritePin(RED_PIN, RED_GPIO_PORT, GPIO_PIN_RESET)
 #define ledRedOff() HAL_GPIO_WritePin(RED_PIN, RED_GPIO_PORT, GPIO_PIN_SET)
 
+#define ledStateOn() HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_SET)
+#define ledStateOff() HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1, GPIO_PIN_RESET)
 LedStatus_t ledGreenStatus = blink, ledRedStatus = blink;
 
 void ledGreenTask(void const * argument){

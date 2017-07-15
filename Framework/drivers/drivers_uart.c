@@ -14,5 +14,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *UartHandle)
 		fw_Warning();
 	}else if(UartHandle == &CTRL_UART){
 		ctrlUartRxCpltCallback();
+		//fw_Warning();
 	}
 }   

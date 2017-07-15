@@ -4,7 +4,7 @@
 #include "drivers_canmotor_user.h"
 #include "rtos_semaphore.h"
 #include "utilities_debug.h"
-
+#include "stdlib.h"
 #include "config_motor.h"
 
 int16_t setMotorWithSpeedPID(
@@ -36,7 +36,7 @@ int16_t setMotorWithPositionSpeedPID(
 	speedPID->feedback = feedbackSpeed;
 	speedPID->Calc(speedPID);
 		
-	setMotor(motorId, -(int16_t)speedPID->output);
+	setMotor(motorId, (int16_t)speedPID->output);
 	return (int16_t)speedPID->output;
 }
 
@@ -99,6 +99,13 @@ void setMotor(MotorId motorId, int16_t Intensity){
 	
 	if(CMReady == 0xF){
 		CanTxMsgTypeDef *pData = IOPool_pGetWriteData(CMTxIOPool);
+		if(abs(CMFLIntensity)+abs(CMFRIntensity)+abs(CMBLIntensity)+abs(CMBRIntensity)>4800*4)
+		{
+			CMFLIntensity=CMFLIntensity*0.85;
+			CMFRIntensity=CMFRIntensity*0.85;
+			CMBLIntensity=CMBLIntensity*0.85;
+			CMBRIntensity=CMBRIntensity*0.85;
+		}
 		//pData->StdId = CM_TXID;
 		pData->Data[0] = (uint8_t)(CMFLIntensity >> 8);//CMFLIntensity
 		pData->Data[1] = (uint8_t)CMFLIntensity;//CMFLIntensity

@@ -10,5 +10,6 @@ void getCtrlUartTask(void const * argument);
 
 
 
-void zykProcessData(void);
+void zykProcessData();
+void wave_task(void const * argument);
 #endif

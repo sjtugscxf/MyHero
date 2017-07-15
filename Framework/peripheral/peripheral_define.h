@@ -14,4 +14,6 @@
 #define CMGMMOTOR_CAN hcan1
 #define AUXMOTOR_CAN hcan2
 
+#define FRICTION_TIM htim12
+#define BULLET_TIM htim4
 #endif
